@@ -1,0 +1,78 @@
+import axios from 'axios';
+
+const API_URL = 'http://localhost:8080';
+const api = axios.create({
+    baseURL: API_URL
+});
+
+export const getToken = () => localStorage.getItem('token');
+
+export const register = async (user) => {
+    try {
+        const response = await api.post('api/auth/register', user);
+        return response.data;
+    }
+    catch (error) {
+        // handleAuthError(error);
+        // console.log(error.response.data)
+        // if(error.response.status === 409){
+        //     return "Conflict";
+        // }
+        return error.response;
+    }
+};
+
+export const login = async (user) => {
+    try {
+        const response = await api.post('api/auth/login', user);
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
+};
+
+export const myProfile = async () => {
+    try {
+        const response = await api.get('api/users/me', {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
+}
+
+export const updateMyProfile = async (user) => {
+    try {
+        const token = getToken();
+        // console.log("tokennnn", token)
+        // console.log("tokennnn", user)
+        const response = axios.put("http://localhost:8080/api/users/me", {
+            username: user.username,
+            email: user.email,
+            password: user.password
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        // const response = await api.put('api/users/me', {
+        //     headers: {
+        //         Authorization: `Bearer ${token}`
+        //     },
+        //     { email: user.email ,
+        //         username: ,
+        //         password: 
+        //      }
+        // });
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
+}
