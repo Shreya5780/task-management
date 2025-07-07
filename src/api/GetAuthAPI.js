@@ -22,7 +22,7 @@ export const register = async (user) => {
     }
 };
 
-export const login = async (user) => {
+export const loginApi = async (user) => {
     try {
         const response = await api.post('api/auth/login', user);
         return response;
@@ -61,18 +61,24 @@ export const updateMyProfile = async (user) => {
             }
         });
 
-        // const response = await api.put('api/users/me', {
-        //     headers: {
-        //         Authorization: `Bearer ${token}`
-        //     },
-        //     { email: user.email ,
-        //         username: ,
-        //         password: 
-        //      }
-        // });
+        
         return response;
     } catch (error) {
         // handleAuthError(error);
         return error.response;
+    }
+}
+
+export const getAllUser = async () => {
+    try {
+        const response = await api.get('api/users/all', {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        // handleAuthError(error);
+        return [];
     }
 }

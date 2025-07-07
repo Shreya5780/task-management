@@ -6,8 +6,18 @@ const api = axios.create({
     baseURL: API_URL
 });
 
-export const addTask = async () => {
-
+export const addTaskApi = async (taskData) => {
+      try {
+        const response = await api.post('api/tasks', taskData, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
 }
 
 export const getAllTask = async () => {

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import '../css/form.css'
-import { login, register } from "../api/GetAuthAPI";
+import { login, loginApi, register } from "../api/GetAuthAPI";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
 
 function Login() {
     const [form, setForm] = useState({
@@ -19,16 +20,19 @@ function Login() {
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState();
 
+    const {login} = useContext(AuthContext)
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // console.log(form);
         try {
-            const response = await login(form);
+            const response = await loginApi(form);
             console.log(response);
              if(response.status === 200 || response.uid){
                 setErrorMsg("")
-                localStorage.setItem('token', response.data)
+                login(response.data.token, response.data.userId)
+                // localStorage.setItem('token', response.data)
                 navigate(`/`)
             }else if(response.data){
                 
@@ -79,6 +83,7 @@ function Login() {
                     />
 
                     <button type="submit" >Login</button>
+                    <a href="/register">Register</a>
 
                     {errorMsg && <h4 style={{color: "red"}}>Error  : {errorMsg} </h4> }
                 </form>

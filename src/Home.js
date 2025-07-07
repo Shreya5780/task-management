@@ -6,7 +6,6 @@ import { getAllTask } from "./api/TaskAuthAPI";
 
 function Home(){
 
-    const [profile, setProfile] = useState([]);
     const navigate = useNavigate();
     const [tasks, setTasks] = useState([]);
 
@@ -20,33 +19,32 @@ function Home(){
                 
             }catch(error) {
                 console.error('Error adding :', error);
-                setProfile("Please Login again!")
             }
         }
         fetchTask()
     }, [])
 
-    const handleProfile = async (e) => {
-        e.preventDefault();
+    // const handleProfile = async (e) => {
+    //     e.preventDefault();
         
-        try {
-                    const response = await myProfile();
-                    console.log(response);
-                     if(response.status === 200 || response.uid){
-                        setProfile(response.data)
-                        const data = response.data
-                        // localStorage.setItem('token', response.data)
-                        navigate(`/profile`, {state: {data}})
-                    }else{
-                        setProfile("Please Login again!")
-                    }
+    //     try {
+    //                 const response = await myProfile();
+    //                 console.log(response);
+    //                  if(response.status === 200 || response.uid){
+    //                     setProfile(response.data)
+    //                     const data = response.data
+    //                     // localStorage.setItem('token', response.data)
+    //                     navigate(`/profile`, {state: {data}})
+    //                 }else{
+    //                     setProfile("Please Login again!")
+    //                 }
         
-                } catch (error) {
-                    console.error('Error adding :', error);
-                    setProfile("Please Login again!")
-                }
+    //             } catch (error) {
+    //                 console.error('Error adding :', error);
+    //                 setProfile("Please Login again!")
+    //             }
                 
-    }
+    // }
 
     return (
         <div>
@@ -54,7 +52,7 @@ function Home(){
         <h3>Home page</h3>
 
         <div>
-            <button id="profile" onClick={handleProfile}>Me</button>
+            {/* <button id="profile" onClick={handleProfile}>Me</button> */}
             <button id="add-btn" onClick={() => navigate(`/add/task`)} >Add Task</button>
         </div>
 
