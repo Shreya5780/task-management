@@ -2,6 +2,7 @@
 
 // to avoid manual refresh after logout or login to get correct header
 import React, { createContext, useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
@@ -12,19 +13,42 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const user = localStorage.getItem('user')
-        setToken(storedToken);
-        setUser(user)
-    }, []);
+        const logintime = localStorage.getItem('logintime')
+        const diff = Date.now() - logintime
+        if(storedToken && logintime){
+
+            if(diff > 3600000){
+                logout()
+                
+            }else{
+                
+                setToken(storedToken);
+                setUser(user)
+            }
+        }else{
+            setToken(null)
+            setUser(null)
+        }
+        }, []);
 
     const login = (newToken, user) => {
         localStorage.setItem('token', newToken);
-        localStorage.setItem('user', user)
+        localStorage.setItem('user', user);
+        
+        //auto logout after token expire
+        localStorage.setItem('logintime', Date.now())
+
         setToken(newToken);
     };
 
+
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user')
+        localStorage.removeItem('logintime')
         setToken(null);
+        setUser(null);
+        
     };
 
     return (

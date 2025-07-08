@@ -42,3 +42,48 @@ export const getAllTask = async () => {
     }
 
 }
+
+export const updateTaskApi = async (taskData) => {
+      try {
+        console.log(taskData)
+        const response = await api.put(`api/tasks/${taskData.tid}`, taskData, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
+}
+
+export const updateTaskStatusApi = async (taskId, status) => {
+      try {
+        console.log(status)
+        const response = await api.patch(`api/tasks/${taskId}/status`, {status: status}, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
+}
+
+export const deleteTaskApi = async (taskId) => {
+      try {
+        console.log("delete taskkkkkkk  ", taskId)
+        const response = await api.delete(`api/tasks/${taskId}`, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+        return response;
+    } catch (error) {
+        // handleAuthError(error);
+        return error.response;
+    }
+}

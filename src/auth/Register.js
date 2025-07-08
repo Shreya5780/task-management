@@ -55,7 +55,7 @@ function Register() {
         <div>
             <h3>Register Page</h3>
             <div id="register">
-                <form onSubmit={handleSubmit} className="auth-form">
+                <form onSubmit={handleSubmit}   >
                     <input
                         name="email"
                         type="email"

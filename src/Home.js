@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { getToken, myProfile } from "./api/GetAuthAPI";
 import { useNavigate } from "react-router-dom";
 import './css/form.css'
-import { getAllTask } from "./api/TaskAuthAPI";
+import { deleteTaskApi, getAllTask, updateTaskStatusApi } from "./api/TaskAuthAPI";
+import { statusList } from "./task/AddTask";
+import StatusDropdown from "./StatusDropdown";
 
 function Home(){
 
     const navigate = useNavigate();
     const [tasks, setTasks] = useState([]);
 
-    useEffect(() => {
-        const fetchTask = async () => {
+     const fetchTask = async () => {
         try{
 
                 const response = await getAllTask();
@@ -21,30 +22,27 @@ function Home(){
                 console.error('Error adding :', error);
             }
         }
+    useEffect(() => {
+       
         fetchTask()
     }, [])
 
-    // const handleProfile = async (e) => {
-    //     e.preventDefault();
-        
-    //     try {
-    //                 const response = await myProfile();
-    //                 console.log(response);
-    //                  if(response.status === 200 || response.uid){
-    //                     setProfile(response.data)
-    //                     const data = response.data
-    //                     // localStorage.setItem('token', response.data)
-    //                     navigate(`/profile`, {state: {data}})
-    //                 }else{
-    //                     setProfile("Please Login again!")
-    //                 }
-        
-    //             } catch (error) {
-    //                 console.error('Error adding :', error);
-    //                 setProfile("Please Login again!")
-    //             }
-                
-    // }
+    const handleTask = (task) => {
+        navigate(`/task/info/${task.tid}`, {state: task})
+    }
+
+      const handleEdit = (task) => {
+            console.log("ediiiiiiitttttt go to adddddddddd")
+            navigate("/add/task", { state: task })
+        }
+    
+        const handleDelete = async(taskId) => {
+           if( window.confirm("Are you sure you want to delete this task? ")){
+            await deleteTaskApi(taskId)
+            fetchTask()
+           }
+        }
+
 
     return (
         <div>
@@ -60,14 +58,13 @@ function Home(){
             
             <ul className="task-list-ul">
                 {Array.isArray(tasks) && tasks.map((task) => (
-                    <li id="task-list" key={task.tid}> 
-                    <p><b>Task Id:- </b> {task.tid} </p>
+                    <li id="task-list" key={task.tid} onClick={() => handleTask(task)}> 
                     <p><b>Title :-</b> {task.title} </p>
-                    <p><b>Description :-</b> {task.description} </p>
                     <p><b>Status :-</b> {task.status} </p>
-                    <p><b>Due Date :- </b> {task.due_date} </p>
-                    <p><b>Created Date :- </b> {task.created_at} </p>
-                    <p><b>Modified Date :- </b> {task.updated_at} </p>
+                  
+                    <p style={{textAlign: "right", color: "#888"}}><b>  {task.due_date}</b> </p>
+                     <button style={{ margin: "2px" }} onClick={(e) => { e.stopPropagation();  handleEdit(task)}}>Edit</button>
+                <button style={{ margin: "2px" }} onClick={(e) =>{ e.stopPropagation(); handleDelete(task.tid)}}>Delete</button>
                      </li>
                 ))}
             </ul>

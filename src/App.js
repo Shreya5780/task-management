@@ -10,6 +10,7 @@ import { getToken } from './api/GetAuthAPI';
 import {ProtectedRoute, RefreshHandler } from './ProtectedRoute';
 import { useState } from 'react';
 import Layout from './Layout';
+import TaskDetail from './task/TaskDetail';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getToken());
@@ -28,6 +29,7 @@ function App() {
           <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
           <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
           <Route path="/add/task" element={<ProtectedRoute element={<AddTask />} />} />
+          <Route path="/task/info/:id" element={<ProtectedRoute element={<TaskDetail />} />} />
 
         </Routes>
         </Layout>
