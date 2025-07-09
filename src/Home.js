@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import './css/form.css'
 import { deleteTaskApi, getAllTask, updateTaskStatusApi } from "./api/TaskAuthAPI";
 import { statusList } from "./task/AddTask";
-import StatusDropdown from "./StatusDropdown";
+import StatusDropdown from "./middelwares/StatusDropdown";
 
 function Home(){
 

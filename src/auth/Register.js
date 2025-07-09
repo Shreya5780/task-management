@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import '../css/form.css'
 import { register } from "../api/GetAuthAPI";
 import { useNavigate } from "react-router-dom";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import {toast} from 'react-toastify'
+
 
 function Register() {
     const [form, setForm] = useState({
@@ -20,24 +24,33 @@ function Register() {
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState();
 
+    const [showPopup, setShowPopup] = useState(false)
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await register(form);
             console.log(response);
-            if(response.status === 200 || response.uid){
+            if (response.status === 200 || response.uid) {
                 setErrorMsg("")
-                navigate(`/login`)
-            }else if(response.data){
+                setShowPopup(true)
+
+                setTimeout(() => {
+                    setShowPopup(false)
+                    navigate(`/login`)
+                }, 1000)
                 
+
+            } else if (response.data) {
+
                 const messages = Object.values(response.data);
                 setErrorMsg(messages)
-            }else{
+            } else {
                 setErrorMsg("Register failed!")
             }
-            
-            
+
+
 
         } catch (error) {
             setErrorMsg(error?.response?.data?.message || "Registration failed");
@@ -51,11 +64,13 @@ function Register() {
         }
     };
 
+
+
     return (
         <div>
             <h3>Register Page</h3>
             <div id="register">
-                <form onSubmit={handleSubmit}   >
+                <form onSubmit={handleSubmit} className="auth-form" >
                     <input
                         name="email"
                         type="email"
@@ -87,8 +102,20 @@ function Register() {
 
                     <button type="submit" >Register</button>
 
-                    {errorMsg && <h4 style={{color: "red"}}>Error  : {errorMsg} </h4> }
+                    {errorMsg && <h4 style={{ color: "red" }}>{errorMsg} </h4>}
+
                 </form>
+
+                {showPopup && (
+                    <Popup open={true} closeOnDocumentClick={false}>
+                        <div style={{ padding: "20px", textAlign: "center" }}>
+                            <h4>Registration Successful!</h4>
+                            <p>Redirecting to login...</p>
+                            <div className="spinner"></div>
+
+                        </div>
+                    </Popup>
+                )}
             </div>
         </div>
     );

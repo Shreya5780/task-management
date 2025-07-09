@@ -6,6 +6,7 @@ const api = axios.create({
 });
 
 export const getToken = () => localStorage.getItem('token');
+export const getUserId = () => localStorage.getItem('user')
 
 export const register = async (user) => {
     try {
@@ -34,7 +35,7 @@ export const loginApi = async (user) => {
 
 export const myProfile = async () => {
     try {
-        const response = await api.get('api/users/me', {
+        const response = await api.get(`api/users/me?userId=${getUserId()}`, {
             headers: {
                 Authorization: `Bearer ${getToken()}`
             }
@@ -49,9 +50,10 @@ export const myProfile = async () => {
 export const updateMyProfile = async (user) => {
     try {
         const token = getToken();
-        // console.log("tokennnn", token)
-        // console.log("tokennnn", user)
-        const response = axios.put("http://localhost:8080/api/users/me", {
+        console.log("tokennnn", token)
+        console.log("tokennnn", user)
+        console.log("tokennnn", getUserId())
+        const response = await axios.put(`http://localhost:8080/api/users/me?userId=${getUserId()}`, {
             username: user.username,
             email: user.email,
             password: user.password
@@ -61,7 +63,7 @@ export const updateMyProfile = async (user) => {
             }
         });
 
-        
+        console.log(response)
         return response;
     } catch (error) {
         // handleAuthError(error);

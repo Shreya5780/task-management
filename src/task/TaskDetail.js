@@ -1,24 +1,26 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom"
+import { replace, useLocation, useNavigate } from "react-router-dom"
 import { deleteTaskApi, updateTaskStatusApi } from "../api/TaskAuthAPI";
 import { statusEnum, statusList } from "./AddTask";
-import StatusDropdown from "../StatusDropdown";
+import StatusDropdown from "../middelwares/StatusDropdown";
 
 
 function TaskDetail() {
     const location = useLocation();
-    const task = location.state;
+    const task = (location.state);
 
     const [status, setStatus] = useState(task.status);
     const handleStatusChange = async (newStatus) => {
         setStatus(newStatus);
         await updateTaskStatusApi(task.tid, newStatus);
+        task.status = newStatus
+        navigate(`/task/info/${task.tid}`, {state: task, replace: true})
     };
 
     const navigate = useNavigate()
 
     const handleEdit = () => {
-        console.log("ediiiiiiitttttt")
+        // console.log("ediiiiiiitttttt")
         navigate("/add/task", { state: task })
     }
 
@@ -35,7 +37,7 @@ function TaskDetail() {
             <h4>Task Info</h4>
             <div id="task-list">
                 <StatusDropdown statusList={statusList} currentStatus={status} onChange={handleStatusChange} />
-                <p> {task.title} </p>
+                <p><b>  {task.title.toUpperCase()} </b> </p>
                 <p style={{ textAlign: "right", color: "#888" }}> {new Date(task.due_date).toUTCString().slice(0, 16)} </p>
                 <hr />
                 <p> {task.description} </p>

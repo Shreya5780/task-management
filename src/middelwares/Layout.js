@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './css/layout.css';
+import '../css/layout.css';
 import { AuthContext } from './AuthContext';
-import { myProfile } from './api/GetAuthAPI';
+import { myProfile } from '../api/GetAuthAPI';
 
 const Layout = ({ children }) => {
     const navigate = useNavigate();

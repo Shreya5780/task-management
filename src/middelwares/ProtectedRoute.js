@@ -1,5 +1,5 @@
 import { Navigate, useLocation, useNavigate } from "react-router-dom"
-import { getToken } from "./api/GetAuthAPI"
+import { getToken } from "../api/GetAuthAPI"
 import { useEffect } from "react";
 
 export const ProtectedRoute =({element}) => {

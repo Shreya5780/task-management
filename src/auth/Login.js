@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import '../css/form.css'
 import { login, loginApi, register } from "../api/GetAuthAPI";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../middelwares/AuthContext";
 
 function Login() {
     const [form, setForm] = useState({
@@ -85,7 +85,7 @@ function Login() {
                     <button type="submit" >Login</button>
                     <a href="/register">Register</a>
 
-                    {errorMsg && <h4 style={{color: "red"}}>Error  : {errorMsg} </h4> }
+                    {errorMsg && <h4 style={{color: "red"}}>{errorMsg} </h4> }
                 </form>
             </div>
         </div>

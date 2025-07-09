@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { addTaskApi, updateTaskApi } from "../api/TaskAuthAPI";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "../middelwares/AuthContext";
 import { getAllUser } from "../api/GetAuthAPI";
 
 
@@ -39,7 +39,6 @@ function AddTask() {
         });
     };
     const navigate = useNavigate();
-    const { user } = useContext(AuthContext)
 
     const [users, setUsers] = useState([]);
 
@@ -126,6 +125,7 @@ function AddTask() {
                 </label>
                 <button type="submit">{isEditMode ? 'Edit task' : 'Add Task'}</button>
             </form>
+             {errorMsg && <h4 style={{color: "red"}}> {errorMsg} </h4> }
         </div>
     )
 }

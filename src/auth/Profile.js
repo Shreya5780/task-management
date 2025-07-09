@@ -43,7 +43,11 @@ function Profile() {
             } else if (response.data) {
                 const messages = Object.values(response.data);
                 setErrorMsg(messages)
-            } else {
+            }
+            // else if(response.status === 404){
+            //     setErrorMsg("Email already exist")
+            // }
+             else {
                 setErrorMsg("Update profile failed!")
             }
 
@@ -98,12 +102,13 @@ function Profile() {
 
                 <div className="profile-field">
                     <label>Created At:</label>
-                    <span>{profile.created_at}</span>
+                    <span>{new Date(profile.created_at).toUTCString().slice(0, 25)}</span>
                 </div>
 
                 {!editMode && <button onClick={() => setEditMode(true)}>Update Profile</button>}
-                {editMode && <button onClick={updateProfile}>Submit Profile</button>}
+                {editMode && <button onClick={() => updateProfile()}>Submit Profile</button>}
             </div>
+             {errorMsg && <h4 style={{color: "red"}}> {errorMsg} </h4> }
         </div>
 
     )

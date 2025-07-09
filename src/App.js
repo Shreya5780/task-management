@@ -7,9 +7,9 @@ import Login from './auth/Login';
 import Profile from './auth/Profile';
 import AddTask from './task/AddTask';
 import { getToken } from './api/GetAuthAPI';
-import {ProtectedRoute, RefreshHandler } from './ProtectedRoute';
+import {ProtectedRoute, RefreshHandler } from './middelwares/ProtectedRoute';
 import { useState } from 'react';
-import Layout from './Layout';
+import Layout from './middelwares/Layout';
 import TaskDetail from './task/TaskDetail';
 
 function App() {
