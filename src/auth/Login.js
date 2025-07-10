@@ -3,6 +3,7 @@ import '../css/form.css'
 import { login, loginApi, register } from "../api/GetAuthAPI";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../middelwares/AuthContext";
+import getEncryptedPassword from "../api/GetEncryptedPassword";
 
 function Login() {
     const [form, setForm] = useState({
@@ -24,8 +25,10 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let encryptedPassword = await getEncryptedPassword(form.password);
+        form.password = encryptedPassword;
 
-        // console.log(form);
+        console.log(form);
         try {
             const response = await loginApi(form);
             console.log(response);
