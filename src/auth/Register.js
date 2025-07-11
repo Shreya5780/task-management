@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {toast} from 'react-toastify'
+import getEncryptedPassword from "../api/GetEncryptedPassword";
 
 
 function Register() {
@@ -28,6 +29,9 @@ function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+         let encryptedPassword = await getEncryptedPassword(form.password);
+                form.password = encryptedPassword;
+        
 
         try {
             const response = await register(form);
